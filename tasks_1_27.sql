@@ -73,19 +73,22 @@ WHERE maker = 'B'
 
 
 # Task 8
+# Find the makers producing PCs but not laptops.
 
-SELECT DISTINCT maker FROM Product
+SELECT DISTINCT maker 
+FROM Product
 WHERE type = 'Pc'
 EXCEPT
-SELECT DISTINCT maker FROM Product
+SELECT DISTINCT maker 
+FROM Product
 WHERE type = 'Laptop'
 
 # Task 9 
+# Find the makers of PCs with a processor speed of 450 MHz or more. Result set: maker.
 
 SELECT DISTINCT maker
 FROM Product
-LEFT JOIN Pc
-ON  Product.model = PC.model
+LEFT JOIN Pc ON  Product.model = PC.model
 WHERE speed >= 450
 
 
