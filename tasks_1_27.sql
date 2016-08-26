@@ -71,7 +71,6 @@ LEFT JOIN
    FROM Printer) AS Price_Table ON SP.model = Price_Table.model
 WHERE maker = 'B'
 
-
 # Task 8
 # Find the makers producing PCs but not laptops.
 
@@ -91,10 +90,11 @@ FROM Product
 LEFT JOIN Pc ON  Product.model = PC.model
 WHERE speed >= 450
 
-
 # Task 10
 
-SELECT model, price FROM Printer
+SELECT model, 
+       price
+FROM Printer
 WHERE price = (SELECT MAX(Price) FROM Printer)
 
 
