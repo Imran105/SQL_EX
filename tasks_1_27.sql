@@ -33,6 +33,7 @@ WHERE color LIKE 'y'
 
 # Task 5
 # Find the model number, speed and hard drive capacity of PCs cheaper than $600 having a 12x or a 24x CD drive.
+
 SELECT model,
        speed,
        hd
@@ -42,24 +43,32 @@ WHERE price < 600
        OR cd = '24x')
 
 # Task 6
+# For each maker producing laptops with a hard drive capacity of 10 Gb or higher, find the speed of such laptops.
+# Result set: maker, speed.
 
-SELECT DISTINCT maker, speed
+SELECT DISTINCT maker,
+                speed
 FROM Laptop
-LEFT JOIN Product
-ON Laptop.model = Product.model
-WHERE hd>=10 AND type = 'laptop'
+LEFT JOIN Product ON Laptop.model = Product.model
+WHERE hd >= 10
+  AND type = 'laptop'
 
 # Task 7
+# Find out the models and prices for all the products (of any type) produced by maker B.
 
-
-SELECT DISTINCT SP.model, Price_Table.price FROM Product AS SP
+SELECT DISTINCT SP.model,
+                Price_Table.price
+FROM Product AS SP
 LEFT JOIN
-(SELECT  model, price FROM Laptop
-  UNION ALL
-  SELECT  model, price FROM PC
-  UNION ALL
-  SELECT model, price FROM Printer) AS Price_Table
-ON SP.model = Price_Table.model
+  (SELECT model,
+          price
+   FROM Laptop
+   UNION ALL SELECT model,
+                    price
+   FROM PC
+   UNION ALL SELECT model,
+                    price
+   FROM Printer) AS Price_Table ON SP.model = Price_Table.model
 WHERE maker = 'B'
 
 
