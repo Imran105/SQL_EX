@@ -91,11 +91,14 @@ LEFT JOIN Pc ON  Product.model = PC.model
 WHERE speed >= 450
 
 # Task 10
+# Find the printer models having the highest price. Result set: model, price.
 
-SELECT model, 
+SELECT model,
        price
 FROM Printer
-WHERE price = (SELECT MAX(Price) FROM Printer)
+WHERE price =
+    (SELECT MAX(Price)
+     FROM Printer)
 
 
 # Task 11
