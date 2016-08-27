@@ -143,28 +143,42 @@ FROM Pc
 GROUP BY hd
 HAVING (COUNT(model) > 1)
 
-
 # Task 17
+# Get the laptop models that have a speed smaller than the speed of any PC. 
+# Result set: type, model, speed.
 
-SELECT DISTINCT type,Laptop.model,  speed FROM Laptop
-LEFT JOIN Product
-ON Laptop.model = Product.model
-WHERE speed < (SELECT MIN(speed) FROM Pc) AND (product.type = 'laptop')
-
-
+SELECT DISTINCT type,
+                Laptop.model,
+                speed
+FROM Laptop
+LEFT JOIN Product ON Laptop.model = Product.model
+WHERE speed <
+    (SELECT MIN(speed)
+     FROM Pc)
+  AND (product.type = 'laptop')
 
 # Task 18
-SELECT DISTINCT maker, price FROM Printer
-LEFT JOIN  Product
-ON Printer.model = Product.model
-WHERE (color = 'y') AND (price = (SELECT MIN(price) FROM Printer WHERE (color = 'y') ))
+# Find the makers of the cheapest color printers.
+# Result set: maker, price.
 
+SELECT DISTINCT maker,
+                price
+FROM Printer
+LEFT JOIN Product ON Printer.model = Product.model
+WHERE (color = 'y')
+  AND (price =
+         (SELECT MIN(price)
+          FROM Printer
+          WHERE (color = 'y') ))
 
 # Task 19
+# For each maker having models in the Laptop table, find out the average screen size of the laptops he produces. 
+# Result set: maker, average screen size.
 
-SELECT  maker,AVG(screen) FROM Laptop
-LEFT JOIN Product
-ON  Laptop.model = Product.model 
+SELECT  maker, 
+       AVG(screen)
+FROM Laptop
+LEFT JOIN Product ON  Laptop.model = Product.model 
 GROUP BY maker
 
 
