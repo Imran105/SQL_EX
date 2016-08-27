@@ -181,81 +181,110 @@ FROM Laptop
 LEFT JOIN Product ON  Laptop.model = Product.model 
 GROUP BY maker
 
-
 # Task 20
+# Find the makers producing at least three distinct models of PCs.
+# Result set: maker, number of PC models.
 
-SELECT maker, count(model) AS cm
+SELECT maker,
+       COUNT(model) AS cm
 FROM Product
 WHERE type = 'Pc'
 GROUP BY maker
-HAVING ( COUNT(DISTINCT model) > 2)
+HAVING (COUNT(DISTINCT model) > 2)
 
 # Task 21 
+# Find out the maximum PC price for each maker having models in the PC table.
+# Result set: maker, maximum price.
 
-SELECT maker, max(price) from PC
-LEFT JOIN
-Product
-ON Pc.model = Product.model
+SELECT maker,
+       MAX(price)
+from Pc
+LEFT JOIN Product ON Pc.model = Product.model
 GROUP BY maker
 
+# Task 22
+# For each value of PC speed that exceeds 600 MHz, find out the average price of PCs with identical speeds.
+# Result set: speed, average price.
 
-# TASK 22
-
-SELECT speed, avg(price) FROM Pc
+SELECT speed,
+       AVG(price)
+FROM Pc
 WHERE speed > 600
 GROUP BY speed
 
-
 # Task 23
+# Get the makers producing both PCs having a speed of 750 MHz or higher and laptops with a speed of 750 MHz or higher. 
+# Result set: maker
 
-
-SELECT   maker FROM Product
-LEFT JOIN
-((SELECT model, speed FROM Pc)
-UNION
-(SELECT model, speed FROM Laptop)) AS important_models
-ON Product.model = important_models.model
+SELECT maker
+FROM Product
+LEFT JOIN (
+             (SELECT model,
+                     speed
+              FROM Pc)
+           UNION
+             (SELECT model,
+                     speed
+              FROM Laptop)) AS important_models ON Product.model = important_models.model
 WHERE SPEED >= 750
 GROUP BY maker
-HAVING (COUNT(DISTINCT type) = 2)
-
-
+HAVING (COUNT(DISTINCT TYPE) = 2)
 
 # Task 24
+# List the models of any type having the highest price of all products present in the database.
 
-SELECT model FROM 
-(SELECT price, model FROM Pc
-UNION
-SELECT price, model FROM Laptop
-UNION
-SELECT price, model FROM Printer) AS Total_List
-WHERE price = (SELECT max(price) 
-FROM (SELECT price, model FROM Pc
-UNION
-SELECT price, model FROM Laptop
-UNION
-SELECT price, model FROM Printer) AS Maximal_Price)
-
+SELECT model
+FROM
+  (SELECT price,
+          model
+   FROM Pc
+   UNION SELECT price,
+                model
+   FROM Laptop
+   UNION SELECT price,
+                model
+   FROM Printer) AS tab_1
+WHERE price =
+    (SELECT max(price)
+     FROM
+       (SELECT price,
+               model
+        FROM Pc
+        UNION SELECT price,
+                     model
+        FROM Laptop
+        UNION SELECT price,
+                     model
+        FROM Printer) AS tab_2)
 
 # Task 26
+# Find out the average price of PCs and laptops produced by maker A.
+# Result set: one overall average price for all items.
 
-SELECT avg(price) FROM Product
-RIGHT JOIN 
-(SELECT model, price from Laptop
-UNION ALL
-SELECT model, price from Pc) AS tools
-ON Product.model = tools.model
-WHERE (type != 'Printer') AND (maker = 'A')
-
+SELECT AVG(price)
+FROM Product
+RIGHT JOIN
+  (SELECT model,
+          price
+   FROM Laptop
+   UNION ALL SELECT model,
+                    price
+   FROM Pc) AS tools ON Product.model = tools.model
+WHERE (TYPE != 'Printer')
+  AND (maker = 'A')
 
 # Task 27
-SELECT maker,avg(hd) from Pc
-LEFT JOIN
-Product
-ON Pc.model = Product.model
-WHERE maker IN 
-(SELECT maker FROM Product
-WHERE type != 'Laptop'
-GROUP BY maker
-HAVING (COUNT(DISTINCT type) = 2))
+# Find out the average hard disk drive capacity of PCs produced by makers who also manufacture printers.
+# Result set: maker, average HDD capacity.
+
+SELECT maker,
+       AVG(hd)
+FROM Pc
+LEFT JOIN Product ON Pc.model = Product.model
+WHERE maker IN
+    (SELECT maker
+     FROM Product
+     WHERE TYPE != 'Laptop'
+     GROUP BY maker
+     HAVING (COUNT(DISTINCT type) = 2))
 GROUP BY maker
