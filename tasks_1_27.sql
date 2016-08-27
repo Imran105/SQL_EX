@@ -102,33 +102,41 @@ WHERE price =
 
 
 # Task 11
+# Find out the average speed of PCs.
 
-SELECT AVG(speed) FROM Pc
+SELECT AVG(speed)
+FROM Pc
 
 # Task 12
+# Find out the average speed of the laptops priced over $1000.
 
-SELECT AVG(speed) FROM Laptop
+SELECT AVG(speed)
+FROM Laptop
 WHERE price > 1000
 
 
 # Task 13
+# Find out the average speed of the PCs produced by maker A.
 
-SELECT  AVG(speed)
+SELECT AVG(speed)
 FROM Pc
-LEFT JOIN Product
-ON Pc.model = Product.model
+LEFT JOIN Product ON Pc.model = Product.model
 WHERE maker = 'A'
 
-
 # Task 14
+# Get the makers who produce only one product type and more than one model.
+# Output: maker, type.
 
-SELECT maker, MAX(type) AS type
+SELECT maker,
+       MAX(TYPE) AS x
 FROM Product
 GROUP BY maker
-HAVING (COUNT(DISTINCT type) = 1) AND (COUNT(DISTINCT model) > 1)
+HAVING (COUNT(DISTINCT TYPE) = 1)
+AND (COUNT(DISTINCT model) > 1)
 
-
-# task 15
+# Task 15
+# Get hard drive capacities that are identical for two or more PCs. 
+# Result set: hd.
 
 SELECT hd
 FROM Pc
