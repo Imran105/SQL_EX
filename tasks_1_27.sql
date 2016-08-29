@@ -334,3 +334,17 @@ SELECT class,
        country
 FROM  Classes
 WHERE bore >= 16
+
+# Task 32
+# One of the characteristics of a ship is one-half the cube of the calibre of its main guns (mw). 
+# Determine the average ship mw with an accuracy of two decimal places for each country having ships in the database.
+
+
+SELECT
+  country,
+  CAST(AVG((bore * bore * bore) / 2) AS decimal(18, 2)) AS Weight
+FROM Ships
+FULL OUTER JOIN Classes
+  ON Ships.class = Classes.class
+WHERE bore IS NOT NULL
+GROUP BY country
