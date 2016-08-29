@@ -326,3 +326,11 @@ FULL JOIN Outcome
 GROUP BY date,
          point
 ORDER BY point, date
+
+# Task 31
+# For ship classes with a gun caliber of 16 in. or more, display the class and the country.
+
+SELECT class,
+       country
+FROM  Classes
+WHERE bore >= 16
