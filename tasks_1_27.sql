@@ -288,3 +288,15 @@ WHERE maker IN
      GROUP BY maker
      HAVING (COUNT(DISTINCT type) = 2))
 GROUP BY maker
+
+# Task 29
+# Under the assumption that receipts of money (inc) and payouts (out) are registered not more than once a day for each 
+# collection point [i.e. the primary key consists of (point, date)], write a query displaying cash flow data 
+# (point, date, income, expense). Use Income_o and Outcome_o tables.
+
+SELECT COALESCE(Income_o.point, Outcome_o.point) AS point,
+       COALESCE(Income_o.date, Outcome_o.date) AS date,
+       inc,
+       out
+FROM Income_o
+FULL OUTER JOIN Outcome_o ON (Outcome_o.date = Income_o.date) AND (Outcome_o.point = Income_o.point)
