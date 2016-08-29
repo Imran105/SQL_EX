@@ -300,3 +300,29 @@ SELECT COALESCE(Income_o.point, Outcome_o.point) AS point,
        out
 FROM Income_o
 FULL OUTER JOIN Outcome_o ON (Outcome_o.date = Income_o.date) AND (Outcome_o.point = Income_o.point)
+
+# Task 30
+# Under the assumption that receipts of money (inc) and payouts (out) can be registered any number of times a day for each
+# collection point [i.e. the code column is the primary key], display a table with one corresponding row for each operating
+# date of each collection point.
+# Result set: point, date, total payout per day (out), total money intake per day (inc). 
+# Missing values are considered to be NULL.
+
+SELECT
+  point,
+  date,
+  SUM(out) AS Outcome,
+  SUM(inc) AS Income
+FROM (SELECT
+  COALESCE(Income.point, Outcome.point) AS point,
+  COALESCE(Income.date, Outcome.date) AS date,
+  inc,
+  out
+FROM Income
+FULL JOIN Outcome
+  ON (Outcome.code = Income.code)
+  AND (Outcome.date = Income.date)) AS final_tab
+
+GROUP BY date,
+         point
+ORDER BY point, date
