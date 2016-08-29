@@ -339,7 +339,6 @@ WHERE bore >= 16
 # One of the characteristics of a ship is one-half the cube of the calibre of its main guns (mw). 
 # Determine the average ship mw with an accuracy of two decimal places for each country having ships in the database.
 
-
 SELECT
   country,
   CAST(AVG((bore * bore * bore) / 2) AS decimal(18, 2)) AS Weight
@@ -348,3 +347,12 @@ FULL OUTER JOIN Classes
   ON Ships.class = Classes.class
 WHERE bore IS NOT NULL
 GROUP BY country
+
+# Task 33
+# Get the ships sunk in the North Atlantic battle. 
+# Result set: ship.
+
+SELECT ship 
+FROM Outcomes
+LEFT JOIN Battles ON Battles.name = Outcomes.battle
+WHERE (Battles.name = 'North Atlantic') AND (result = 'sunk')
