@@ -356,3 +356,97 @@ SELECT ship
 FROM Outcomes
 LEFT JOIN Battles ON Battles.name = Outcomes.battle
 WHERE (Battles.name = 'North Atlantic') AND (result = 'sunk')
+
+# Task 34
+
+SELECT DISTINCT name
+FROM Ships
+LEFT JOIN Classes ON Ships.class = Classes.class
+WHERE (displacement > 35000) AND (launched > 1921) AND (launched IS NOT NULL) AND (type = 'bb')
+
+# task 35
+
+SELECT model, type 
+FROM Product 
+WHERE model NOT LIKE '%[^A-Z]%' OR model NOT LIKE '%[^0-9]%'
+
+# Task 38
+SELECT country FROM Classes
+GROUP BY country
+HAVING (COUNT( DISTINCT type) = 2)
+
+
+# Task 40
+
+SELECT  Ships.class,name, country FROm Ships
+LEFT JOIN
+Classes
+ON Ships.class = Classes.class
+WHERE numGuns >= 10
+
+# Task 41
+
+SELECT * FROM PC
+WHERE code = ( SELECT max(code) FROm PC)
+# task 42
+
+SELECT ship, battle FROM Outcomes
+WHERE result = 'sunk'
+
+# Task 44
+
+SELECT name from Ships
+WHERE lower(name) like 'r%'
+UNION
+SELECT ship FROM Outcomes
+WHERE lower(ship) like 'r%'
+
+
+# Task 45
+
+SELECT Distinct name FROM (
+SELECT name, LEN(name)-LEN(REPLACE(name, ' ', '')) as joe  from Ships
+UNION ALL
+SELECT ship as name, LEN(ship)-LEN(REPLACE(ship, ' ', '')) as joe from Outcomes
+) as dock
+where JOE > 1
+
+
+# Task 48
+
+SELECT DISTINCT class FROM Outcomes 
+LEFT JOIN (
+SELECT name,class FROM SHIPS
+UNION
+(SELECT class as name, class FROM Classes)) AS JOE
+ON Outcomes.ship = JOE.name
+WHERE result = 'sunk' AND class IS NOT NULL
+
+
+# TASK 49
+
+SELECT name FROM Classes
+RIGHT JOIN (
+SELECT ship as name, ship as class FROM Outcomes
+UNION
+SELECT  name, class  FROM Ships) AS shiplist
+ON Classes.class = shiplist.class
+WHERE bore = 16.00
+
+# TASK 50
+
+SELECT DISTINCT battle FROM Outcomes
+LEFT JOIN 
+Ships
+on Outcomes.ship = Ships.name
+WHERE class = 'Kongo'
+
+
+# Task 51
+
+SELECT DISTINCT name FROm Ships
+LEFT JOIn Classes
+on Ships.class = Classes.class
+Where (Country = 'japan' OR Country IS NULL) AND (displacement <=65000 OR Displacement IS NULL) AND (bore <19 OR bore IS NULL) and (numGuns >=9 OR Numguns IS NULL) and (type = 'bb' OR type IS NULL)
+
+
