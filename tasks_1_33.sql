@@ -450,3 +450,16 @@ on Ships.class = Classes.class
 Where (Country = 'japan' OR Country IS NULL) AND (displacement <=65000 OR Displacement IS NULL) AND (bore <19 OR bore IS NULL) and (numGuns >=9 OR Numguns IS NULL) and (type = 'bb' OR type IS NULL)
 
 
+# Task 53
+
+SELECT CAST(avg(CAST(numGuns AS Decimal(16,2)))AS Decimal(16,2))  FROM Classes
+where type = 'bb'
+
+
+# Task 55
+
+SELECT  Classes.class,min(launched) FROm CLasses
+LEFT JOIN
+SHIPS
+on Classes.class = Ships.Class
+GROUP BY Classes.class
